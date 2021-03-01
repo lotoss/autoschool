@@ -12,13 +12,25 @@ new Server({ server: require("../index.js") }).on("connection", async socket => 
         const { id, container, type } = meta;
         container.print(socket, "Connesso...", "magenta");
 
-        //| Reinvio dati sessione corrente
-        const { domanda } = container;
-        if (domanda)
-            socket.send(domanda);
-        if (type == "admin")
-            for (const msg of Object.values(container.risposte))
-                socket.send(msg);
+        //| Sincronizzazione dati con sessione corrente
+        if (true)
+        {
+            if (type == "user")
+                container.send(id, { utente: { row: meta.row } }); // Utente corrente (Admin)
+            else if (type == "admin")
+            {
+                Object.values(container.risposte).forEach(x => // Risposte (Admin)
+                    socket.send(x)
+                );
+                container.clients.forEach(({ row }) => // Utenti precedentemente connessi (Admin)
+                    container.send(id, { utente: { row } })
+                );
+            }
+
+            const { domanda } = container;
+            if (domanda) // Domanda (Tutti)
+                socket.send(domanda);
+        }
 
         //| Ricezione messaggi
         socket.on("message", async msg => {

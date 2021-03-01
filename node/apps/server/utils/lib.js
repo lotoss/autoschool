@@ -102,7 +102,7 @@ class scuola
     
     close()
     {
-        for (const [k] of this.clients) k.close();
+        for (const [sock] of this.clients) sock.close();
     }
 
     remove(sock)
@@ -146,14 +146,10 @@ class scuola
                 this.risposte[id] = msg;
             else return;
         else if (obj.domanda) [this.domanda, this.risposte] = [msg, {}];
+        else if (obj.utente);
         else return;
-        for (const [sock, { type }] of this.clients) if (
-            (type == "admin" && obj.risposta) ||
-            (
-                (type == "admin" || type == "user") &&
-                obj.domanda
-            )
-        ) sock.send(msg);
+        for (const [sock, { type }] of this.clients) if (type == "admin" || (type == "user" && obj.domanda))
+            sock.send(msg);
     }
 };
 
