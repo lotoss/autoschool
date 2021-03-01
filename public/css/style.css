@@ -1,0 +1,96 @@
+body {
+    font-size: 20px;
+    color: #fff !important;
+}
+
+.table-hover tbody tr {
+    cursor: pointer;
+}
+
+.table td,
+.table th {
+    color: #fff !important;
+}
+
+html .content.app-content {
+    overflow: unset !important;
+}
+
+.card .card-body {
+    border-radius: inherit;
+}
+
+.card-hover {
+    cursor: pointer;
+}
+
+.card img {
+    border-radius: 0;
+}
+
+.card-body.text-center.h-100:hover {
+    background-color: #394c62 !important;
+}
+
+.card .card-body.cr-card-body {
+    transition: background-color .2s, box-shadow .2s;
+    display: table !important;
+    background-color: #343B53 !important;
+    color: #8A99B5 !important;
+    height: 100% !important;
+    text-align: center;
+}
+
+.card .card-body.cr-card-body:hover {
+    box-shadow: 0px 5px 5px 0px rgba(11, 26, 51, 0.63) !important;
+    background-color: #303a52 !important;
+}
+
+.card .card-body.cr-card-body>* {
+    display: table-cell !important;
+    vertical-align: middle !important;
+}
+
+.card .card-body.cr-card-body>img {
+    margin-right: 20px;
+    margin-top: 20px;
+    width: 120px;
+}
+
+.card .card-body.cr-card-body>img+* {
+    text-align: left;
+    width: 100%;
+}
+
+.view-img {
+    cursor: zoom-in;
+}
+
+video {
+    outline: 0;
+}
+
+.has-search .form-control {
+    padding-left: 2.375rem;
+}
+
+.form-control::placeholder {
+    color: inherit !important;
+    opacity: .5 !important;
+}
+
+.has-search .form-control-feedback {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 2.375rem;
+    height: 2.375rem;
+    line-height: 2.375rem;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
+}
+
+.table-bordered {
+    border-color: #464D5C !important;
+}

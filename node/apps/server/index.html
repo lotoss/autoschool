@@ -1,0 +1,62 @@
+
+<h1 style="font-family: Arial"> Hey vattene! </h1>
+<br> <br> <br>
+<pre>    
+    function web(type, id)
+    {
+        const out = new WebSocket("<script>
+            const url = new URL(window.location.href);
+            url.protocol = url.protocol == "https:" ? "wss:" : "ws:";
+            document.write(url.href);
+        </script>");
+        return new Promise(then => out.onopen = () => {
+            send(out, { type, id });
+            then(out);
+        });
+    }
+
+    function send(socket, obj)
+    {
+        return socket.send(JSON.stringify(obj));
+    }
+
+    async function main()
+    {
+        a = await web("admin", "d7cdeba7-5d07-11eb-9d07-16fe402bc5a4");
+        a.onmessage = x => console.log("a >>>", JSON.parse(x.data));
+
+        b = await web("prof", "d7cdeba7-5d07-11eb-9d07-16fe402bc5a4");
+
+        c = await web("user", "1e970013-5d08-11eb-9d07-16fe402bc5a4");
+        c.onmessage = x => console.log("c >>>", JSON.parse(x.data)) ?? send(c, {
+            risposta: {
+                answer: "V"
+            }
+        });
+
+        d = await web("user", "4e0318f7-5d08-11eb-9d07-16fe402bc5a4");
+        d.onmessage = x => console.log("d >>>", JSON.parse(x.data)) ?? send(d, {
+            risposta: {
+                answer: "F"
+            }
+        });
+
+        send(b, {
+            domanda: {
+                id_domanda: "02",
+                id_gruppo: "12003"
+            }
+        });
+
+        setTimeout(() => {
+            send(b, {
+                domanda: {
+                    id_domanda: "03",
+                    id_gruppo: "12003"
+                }
+            });
+        }, 10000);
+    }
+
+    main();
+</pre>
