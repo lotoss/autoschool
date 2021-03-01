@@ -22,7 +22,8 @@ new Server({ server: require("../index.js") }).on("connection", async socket => 
                 Object.values(container.risposte).forEach(x => // Risposte (Admin)
                     socket.send(x)
                 );
-                container.clients.forEach(({ row }) => // Utenti precedentemente connessi (Admin)
+                container.clients.forEach(({ type, row }) => // Utenti precedentemente connessi (Admin)
+                    type == "user" &&
                     container.send(id, { utente: { row } })
                 );
             }
