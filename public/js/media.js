@@ -103,7 +103,6 @@ class Media extends JqueryClass {
         this.inputLabelText = inputLabelText;
         this.removeFileButtonName = "rm-media-uploader-file" + '-' + this.id;
         this.removeFileButton = "#" + this.removeFileButtonName;
-        this.uploadedFile;
         this.mediaSearch = new MediaSearch();
 
         this.html = `
@@ -122,7 +121,6 @@ class Media extends JqueryClass {
 
     upload() {
         $("input[name='media_uploader_delete']").remove();
-        this.uploadedFile = undefined;
         $(this.input).removeClass("is-invalid").attr("title", "Nessun file selezionato");
         $(this.inputLabel).text("Carica un'immagine o un video");
         $(this.removeFileButton).remove();
@@ -143,7 +141,7 @@ class Media extends JqueryClass {
 
                 label = label.substring(0, label.length - 2);
                 this.fill(label);
-                return true;
+                return file;
             }
         } catch (e) {
             $(this.input).addClass("is-invalid").val("").parent().find(".invalid-feedback").text(e);
@@ -159,21 +157,21 @@ class Media extends JqueryClass {
                 <span aria-hidden="true">&times;</span>
             </button>
         `)
-        this.uploadedFile = true;
     }
 }
 
 var media = new Media();
 
 $(document).on("change", media.input, function() {
-    if (!media.upload()) {
+    let file = media.upload();
+    if (!file) {
         if (!media.mediaSearch.fixed && media.mediaSearch) {
             media.mediaSearch.remove();
         }
         return false;
     }
 
-    if (!media.mediaSearch.fixed && media.uploadedFile.type.substring(0, media.uploadedFile.type.indexOf("/")) != "video" && $("#link-to-container").length == 0 && $("#selected-result-container").length == 0) {
+    if (!media.mediaSearch.fixed && file.type.substring(0, file.type.indexOf("/")) != "video" && $("#link-to-container").length == 0 && $("#selected-result-container").length == 0) {
         media.mediaSearch.display();
     }
 })

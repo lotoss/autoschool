@@ -1,11 +1,3 @@
-<ul class="nav nav-tabs" id="tab-list" role="tablist">
-    <li class="nav-item">
-        <a class="nav-link" id="expl-tab" data-toggle="tab" href="#expl" role="tab" aria-controls="expl" aria-selected="true">Spiegazione</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="quiz-tab" data-toggle="tab" href="#quiz" role="tab" aria-controls="quiz" aria-selected="false">Quiz</a>
-    </li>
-</ul>
 <div class="tab-content bg-transparent px-0" id="tab-content">
     <div class="tab-pane fade" id="expl" role="tabpanel" aria-labelledby="expl-tab">
         <h2 class="text-center mb-3"><?= htmlspecialchars(ucfirst($gruppo->descrizione), ENT_QUOTES, 'UTF-8') ?></h2>
@@ -176,7 +168,7 @@
                                 <?php endif; ?>
                             </td>
                         <?php endif; ?>
-                        <td class="text-center p-0" style="<?= isset($_GET['searched_id']) && $_GET['searched_id'] == $domanda->id ? 'background-color: #800000;' : '' ?><?= $domanda->isContrapposta() && !empty($_GET['view_ans']) && $_GET['view_ans'] == 'true' ? 'background-color: #fbc02d;' : '' ?>"><?= $key + 1 ?></td>
+                        <td class="text-center p-0" style="<?= isset($_GET['searched_id']) && $_GET['searched_id'] == $domanda->id ? 'background-color: #800000;' : '' ?><?= $domanda->isContrapposta() && !empty($_GET['view_ans']) && $_GET['view_ans'] == 'true' ? 'background-color: #46c34c;' : '' ?>"><?= $key + 1 ?></td>
                         <td class="view-question-td" style="<?= isset($_GET['searched_id']) && $_GET['searched_id'] == $domanda->id ? 'background-color: #800000;' : '' ?>"><?= htmlspecialchars($domanda->domanda, ENT_QUOTES, 'UTF-8') ?></td>
                         <?php if (!empty($_GET['view_ans']) && $_GET['view_ans'] == 'true') : ?>
                             <td class="text-center" style="font-weight: 500; font-size: 1.2em; <?= isset($_GET['searched_id']) && $_GET['searched_id'] == $domanda->id ? 'background-color: #800000;' : '' ?><?= $domanda->risposta == 'V' ? 'color: #46c34c' : 'color: #ca0000' ?> !important"><?= htmlspecialchars($domanda->risposta, ENT_QUOTES, 'UTF-8') ?></td>
@@ -245,7 +237,7 @@
                     }
                 }
 
-                $("#tab-list a").click(function() {
+                $("#tab-list button").click(function() {
                     localStorage.setItem("tab", $(this).attr("href"))
                 })
 

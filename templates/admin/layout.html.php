@@ -58,12 +58,22 @@
                         <?php if (!empty($breadcrumbs)) : ?>
                             <ul class="nav navbar-nav">
                                 <nav aria-label="breadcrumb">
-                                    <ol class="breadcrumb p-0 bg-transparent mt-2">
+                                    <ol class="breadcrumb p-0 bg-transparent mt-1">
                                         <?php foreach ($breadcrumbs as $key => $breadcrumb) : ?>
                                             <li class="breadcrumb-item <?= $key == count($breadcrumbs) - 2 ? 'active' : '' ?>" aria-current="page"><?= $breadcrumb ?></li>
                                         <?php endforeach; ?>
                                     </ol>
                                 </nav>
+                            </ul>
+                        <?php endif; ?>
+                        <?php if ($_GET['controller']  == 'argomentiController' && $_GET['action'] == 'viewGroup') : ?>
+                            <ul class="nav ml-4" id="tab-list" role="tablist">
+                                <li class="nav-item mr-2">
+                                    <button class="btn btn-primary" style="width: 155px; font-size: 20px" id="expl-tab" data-toggle="tab" href="#expl" role="tab" aria-controls="expl" aria-selected="true">Spiegazione</button>
+                                </li>
+                                <li class="nav-item">
+                                    <button class="btn btn-success" style="width: 155px; font-size: 20px" id="quiz-tab" data-toggle="tab" href="#quiz" role="tab" aria-controls="quiz" aria-selected="false">Quiz</button>
+                                </li>
                             </ul>
                         <?php endif; ?>
                         <!-- <ul class="nav navbar-nav bookmark-icons">
