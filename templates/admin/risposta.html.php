@@ -28,7 +28,7 @@
                         <?php endif;  ?>
                         <?php if ($domanda->getCommento()->file_type == 'image') : ?>
                             <div style="max-width: 300px">
-                                <img src="/img/domande/commenti/<?= htmlspecialchars($domanda->getCommento()->file_name, ENT_QUOTES, 'UTF-8') ?>" alt="Immagine <?= htmlspecialchars($file->file_name, ENT_QUOTES, 'UTF-8') ?>" style="width: 100%; height: 100%; object-fit: cover;" class="rounded view-img">
+                                <img src="/img/domande/commenti/<?= htmlspecialchars($domanda->getCommento()->file_name, ENT_QUOTES, 'UTF-8') ?>" alt="Immagine <?= htmlspecialchars($domanda->getCommento()->file_name, ENT_QUOTES, 'UTF-8') ?>" style="width: 100%; height: 100%; object-fit: cover;" class="rounded view-img">
                             </div>
                         <?php elseif ($domanda->getCommento()->file_type == 'video') : ?>
                             <div style="width: 290px; height: 140px;">
@@ -37,11 +37,14 @@
                                 </video>
                             </div>
                         <?php endif; ?>
-                        <?php if ($_SESSION['work_mode']) : ?>
-                            <div class="mt-3">
-                                <button class="btn btn-outline-success" id="btn-add-comment" type="button"><?= empty($domanda->getCommento()) ? 'Nuovo commento' : 'Modifica commento' ?></button>
-                            </div>
-                        <?php endif;  ?>
+                        <div class="d-flex justify-content-between">
+                            <?php if ($_SESSION['work_mode']) : ?>
+                                <button class="btn btn-outline-success mt-2" id="btn-add-comment" type="button"><?= empty($domanda->getCommento()) ? 'Nuovo commento' : 'Modifica commento' ?></button>
+                            <?php endif;  ?>
+                            <?php if (!empty($domanda->getCommento()->id_gruppo_link)) : ?>
+                                <button class="btn btn-primary mt-2" onclick="window.open('/admin/lezione?controller=argomentiController&action=viewGroup&id=<?= htmlspecialchars($domanda->getCommento()->id_gruppo_link, ENT_QUOTES, 'UTF-8') ?><?= !empty($domanda->getCommento()->id_domanda_link) ? '&searched_id=' . htmlspecialchars($domanda->getCommento()->id_domanda_link, ENT_QUOTES, 'UTF-8') : '' ?>')">Vai al collegamento</button>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -52,6 +55,9 @@
 <script>
     const upload_max_filesize = <?= (int) substr(ini_get('upload_max_filesize'), 0, -1) * 1e+6 ?>;
     $(function() {
+        media.mediaSearch.fixed = true;
+        media.mediaSearch.title = "Vuoi collegare questa risposta ad una domanda o ad un argomento?";
+
         $("#btn-confirm").click(function() {
             window.close();
         })
@@ -68,14 +74,15 @@
                         <input type="hidden" name="id" value="<?= htmlspecialchars($domanda->getCommento()->id ?? '', ENT_QUOTES, 'UTF-8') ?>">
                         <h6>
                             Inserisci il commento
-                            <button type="button" id="rm-rel-comment-card" class="close" style="outline: 0;" aria-label="Close">
+                            <!--<button type="button" id="rm-rel-comment-card" class="close" style="outline: 0;" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
-                            </button>
+                            </button>-->
                         </h6>
                         <div class="form-group">
                             <textarea id="rel-comment" name="comment" class="form-control" rows="10"><?= htmlspecialchars($domanda->getCommento()->commento ?? '', ENT_QUOTES, 'UTF-8') ?></textarea>
                         </div>
-                        <h6 class="text-white mb-1">Aggiungi un'immagine o un video</h6>
+                        <div class="media-uploader"></div>
+                        <!--<h6 class="text-white mb-1">Aggiungi un'immagine o un video</h6>
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" title="<?= $domanda->getCommento()->file_name ? $domanda->getCommento()->file_name : '' ?>" name="file" id="rel-img" accept="image/jpg, image/jpeg, image/gif, image/png, video/mov, video/mp4">
                             <small class="form-text text-white">Grandezza massima supportata: ${Math.round(upload_max_filesize / 1e+6)}MB</small>
@@ -86,8 +93,8 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             <?php endif; ?>
-                        </div>
-                        <?php if (!empty($domanda->getCommento()->file_name)) : ?>
+                        </div>-->
+                        <!--<?php if (!empty($domanda->getCommento()->file_name)) : ?>
                             <div id="preview-file-container">
                                 <?php if ($domanda->getCommento()->file_type == 'image') : ?>
                                     <div style="width: 140px; height: 140px; margin-top: 20px">
@@ -101,16 +108,19 @@
                                     </div>
                                 <?php endif; ?>
                             </div>
-                        <?php endif; ?>
+                        <?php endif; ?>-->
                         <button type="submit" class="btn btn-primary float-right mt-1">Salva</button>
                     </form>
                 </div>
             `)
-        })
-
-        $(document).on("click", "#rm-rel-comment-card", function() {
-            $(".app-content.content").removeClass("show-overlay");
-            $("#rel-comment-card").remove();
+            media.display();
+            media.mediaSearch.display();
+            <?php if (!empty($domanda->getCommento()->id_gruppo_link)) : ?>
+                media.mediaSearch.select("<?= htmlspecialchars($mediaLinkedLabel ?? '', ENT_QUOTES, 'UTF-8') ?>", "<?= htmlspecialchars($domanda->getCommento()->id_gruppo_link ?? '', ENT_QUOTES, 'UTF-8') ?>", "<?= htmlspecialchars($domanda->getCommento()->id_domanda_link ?? '', ENT_QUOTES, 'UTF-8') ?>");
+            <?php endif; ?>
+            <?php if (!empty($domanda->getCommento()->file_name)) : ?>
+                media.fill("Clicca per sostiuire l'immagine o il video");
+            <?php endif; ?>
         })
 
         $(document).on("mousedown", function(e) {
@@ -120,56 +130,12 @@
             }
         })
 
-        $(document).on("change", "input[name=file]", function() {
-            $(this).removeClass("is-invalid");
-            $(`label[for=${$(this).attr("id")}]`).text("Carica un'immagine o un video");
-            $("#preview-file-container").remove();
-            $("#rm-uploaded-file").remove();
-            $(this).attr("title", "Nessun file selezionato");
-            var files = Array.from(this.files);
-            var exts = Array.from($(this).attr("accept").split(", "));
-            var label = "";
-            var error = false;
-            var file = files[0];
-            try {
-                if (exts.includes(file.type)) {
-                    label += file.name + ', ';
-                } else {
-                    throw `Errore in "${file.name.escape()}": estensione non supportata`;
-                }
-                var filesize = file.size;
-                if (filesize > upload_max_filesize) {
-                    throw `Errore in "${file.name.escape()}": dimensione file (${Math.round(filesize / 1e+6)}MB) oltre i limit previsti: ${Math.round(upload_max_filesize / 1e+6)}MB`;
-                }
-            } catch (e) {
-                error = true;
-                $(this).parent().find(".invalid-feedback").text(e);
-                $(this).addClass("is-invalid");
-                $(this).val("");
-            }
-            if (!error && label != "") {
-                label = label.substring(0, label.length - 2);
-                $(`label[for=${$(this).attr("id")}]`).text(label);
-                $(this).attr("title", label);
-            }
-        })
-
-        $(document).on("mouseup", "#rm-uploaded-file", function() {
-            $("input[name=file]").val('');
-            $("input[name=file]").removeClass("is-invalid");
-            $(`label[for=${$("input[name=file]").attr("id")}]`).text("Carica un'immagine o un video");
-            $("input[name=file]").attr("title", "Nessun file selezionato");
-            $("#preview-file-container").remove();
-            $("#form-rel-comment").prepend(`<input type="hidden" name="deleteImage">`);
-            $(this).remove();
-        })
-
         $(document).on("submit", "#form-rel-comment", function(e) {
             $("#form-rel-comment button[type=submit]").prop("disabled", true).text("Salvataggio...");
         })
-
     })
 </script>
+<script src="/js/media.js"></script>
 <style>
     .ans-container {
         color: #fff;

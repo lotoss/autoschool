@@ -33,7 +33,7 @@
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css?<?php echo date('l jS \of F Y h:i:s A'); ?>">
     <!-- END: Custom CSS-->
 
 </head>

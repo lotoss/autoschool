@@ -94,3 +94,89 @@ video {
 .table-bordered {
     border-color: #464D5C !important;
 }
+
+#remove-related-img {
+    right: -5px;
+    top: -5px;
+    width: 20px;
+    height: 20px;
+    line-height: 1;
+    font-size: 16px;
+    user-select: none;
+}
+
+#remove-related-img:hover {
+    background-color: #f44336 !important;
+    box-shadow: 0px 0px 5px 0px rgba(201, 201, 201, 1);
+}
+
+
+/* width */
+
+.media-search-result-container::-webkit-scrollbar {
+    width: 5px;
+}
+
+
+/* Track */
+
+.media-search-result-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+
+/* Handle */
+
+.media-search-result-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 8px;
+}
+
+
+/* Handle on hover */
+
+.media-search-result-container::-webkit-scrollbar-thumb:active {
+    background: #555;
+}
+
+.media-search-result-container {
+    font-size: 18px;
+    max-height: 200px;
+    overflow-y: overlay;
+    margin: 0 0 0 0;
+}
+
+.media-search-result-container>li {
+    padding: 6px 10px !important;
+    cursor: pointer;
+}
+
+.media-search-result-container>li:hover {
+    background-color: #3a4255 !important;
+}
+
+.inserted-image-content {
+    width: 140px;
+    height: 140px;
+    position: relative;
+}
+
+.inserted-video-content {
+    width: 290px;
+    height: 140px;
+    position: relative;
+}
+
+.go-to-link-content {
+    display: block;
+    width: 100%;
+    font-size: 14px;
+    text-align: center;
+    padding: 2px 0;
+    border: 1px solid;
+    margin-bottom: 3px;
+}
+
+.go-to-link-content:hover {
+    text-decoration: underline;
+}
