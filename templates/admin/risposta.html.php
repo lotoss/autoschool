@@ -66,7 +66,7 @@
             $("#rel-comment-card").remove();
             $(".app-content.content").addClass("show-overlay");
             $("body").append(`
-                <div class="card shadow-sm position-fixed border" id="rel-comment-card" style="margin: 10px; top: 100px; z-index: 100; left: 50%; transform: translateX(-50%)">
+                <div class="card shadow-sm position-fixed border" id="rel-comment-card" style="margin: 10px; top: 132px; z-index: 100; left: 50%; transform: translateX(-50%)">
                     <div class="card-body" style="width: 500px">
                     <form enctype="multipart/form-data" id="form-rel-comment" action="?controller=argomentiController&action=saveComment" method="post">
                         <input type="hidden" name="id_gruppo" value="${urlParams.get("id_gruppo")}">
