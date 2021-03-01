@@ -23,8 +23,8 @@ new Server({ server: require("../index.js") }).on("connection", async socket => 
                     socket.send(x)
                 );
                 container.clients.forEach(({ type, row }) => // Utenti precedentemente connessi (Admin)
-                    console.log(">>>", type, row) ?? (type == "user" &&
-                    container.send(id, { utente: { row } }))
+                    type == "user" &&
+                    container.send(id, { utente: { row } })
                 );
             }
 
