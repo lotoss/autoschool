@@ -27,14 +27,14 @@
 
         b = await web("prof", "d7cdeba7-5d07-11eb-9d07-16fe402bc5a4");
 
-        c = await web("user", "1e970013-5d08-11eb-9d07-16fe402bc5a4");
+        c = await web("user", "05bc65e3e7d523-006b-9be6-0ef0-6af164");
         c.onmessage = x => console.log("c >>>", JSON.parse(x.data)) ?? send(c, {
             risposta: {
                 answer: "V"
             }
         });
 
-        d = await web("user", "4e0318f7-5d08-11eb-9d07-16fe402bc5a4");
+        d = await web("user", "05bc6633fa7643-0054-c12b-1d53-2ed77f");
         d.onmessage = x => console.log("d >>>", JSON.parse(x.data)) ?? send(d, {
             risposta: {
                 answer: "F"
