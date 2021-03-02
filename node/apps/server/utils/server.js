@@ -35,30 +35,39 @@ new Server({ server: require("../index.js") }).on("connection", async socket => 
 
         //| Ricezione messaggi
         socket.on("message", async msg => {
-            if (msg == "alive");
-            else if (msg == "close" && type == "admin")
+            try
             {
-                //| Chiusura forzata test
-                container.print(socket, "Chiusura...", "brightRed");
-                container.close(); // La chiusura di tutti i socket attiverà l'evento di reset di base
-            }
-            else
-            {
-                //| Reindirizzamento del messaggio
-                const obj = JSON.parse(msg);
-                if (obj.ban && type == "admin")
+                if (msg == "alive");
+                else if (msg == "close" && type == "admin")
                 {
-                    const { id, bool = true } = obj.ban;
-                    container.ban(id, bool);
-                    container.print(socket, `${ bool ? "Bannato " : "Sbannato" } ${ colors.gray("[" + colors.cyan(id) + "]") }`, "brightRed");
+                    //| Chiusura forzata test
+                    container.print(socket, "Chiusura...", "brightRed");
+                    container.close(); // La chiusura di tutti i socket attiverà l'evento di reset di base
                 }
                 else
                 {
-                    container.print(socket, obj)
-                    if (obj.domanda) obj.domanda.row ??= await scuola.first("SELECT * FROM domande WHERE id = ? AND id_gruppo = ? LIMIT 1", [ obj.domanda.id_domanda, obj.domanda.id_gruppo ]);
-                    else if (obj.risposta) obj.risposta.row = meta.row;
-                    container.send(id, obj);
+                    //| Reindirizzamento del messaggio
+                    const obj = JSON.parse(msg);
+                    if (obj.ban && type == "admin")
+                    {
+                        const { id, bool = true } = obj.ban;
+                        container.ban(id, bool);
+                        container.print(socket, `${ bool ? "Bannato " : "Sbannato" } ${ colors.gray("[" + colors.cyan(id) + "]") }`, "brightRed");
+                    }
+                    else
+                    {
+                        container.print(socket, obj)
+                        if (obj.domanda) obj.domanda.row ??= await scuola.first("SELECT * FROM domande WHERE id = ? AND id_gruppo = ? LIMIT 1", [ obj.domanda.id_domanda, obj.domanda.id_gruppo ]);
+                        else if (obj.risposta) obj.risposta.row = meta.row;
+                        container.send(id, obj);
+                    }
                 }
+            }
+            catch (e)
+            {
+                tag("errore", container.key, "bgRed");
+                console.error(e);
+                tag("/errore", "bgRed");
             }
         });
     }
