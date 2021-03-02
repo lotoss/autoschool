@@ -4,39 +4,36 @@ const colors = require("colors/safe");
 const { Server } = require("ws");
 
 new Server({ server: require("../index.js") }).on("connection", async socket => {
-    try
-    {
-        //| Connessione
-        const meta = await scuola.add(socket);
-        if (!meta) return socket.close();
-        const { id, container, type } = meta;
-        container.print(socket, "Connesso...", "magenta");
-
-        //| Sincronizzazione dati con sessione corrente
-        if (true)
+    var id, type, container, meta;
+    socket.on("message", async msg => {
+        try
         {
-            if (type == "user")
-                container.send(id, { utente: { row: meta.row } }); // Utente corrente (Admin)
-            else if (type == "admin")
+            if (!meta)
             {
-                Object.values(container.risposte).forEach(x => // Risposte (Admin)
-                    socket.send(x)
-                );
-                container.clients.forEach(({ type, row }) => // Utenti precedentemente connessi (Admin)
-                    type == "user" &&
-                    container.send(id, { utente: { row } })
-                );
+                //| Connessione
+                meta = await scuola.add(socket, JSON.parse(msg));
+                if (!meta) return socket.close();
+                ({ id, type, container } = meta);
+                container.print(socket, "Connesso...", "magenta");
+
+                //| Sincronizzazione dati con sessione corrente
+                if (container.domanda) socket.send(container.domanda); // Domanda (Tutti)
+                if (type == "user")
+                    container.send(id, { utente: { row: meta.row } }); // Utente corrente (Admin)
+                else if (type == "admin")
+                {
+                    Object.values(container.risposte).forEach(x => // Risposte (Admin)
+                        socket.send(x)
+                    );
+                    container.clients.forEach(({ type, row }) => // Utenti precedentemente connessi (Admin)
+                        type == "user" &&
+                        container.send(id, { utente: { row } })
+                    );
+                }
             }
-
-            const { domanda } = container;
-            if (domanda) // Domanda (Tutti)
-                socket.send(domanda);
-        }
-
-        //| Ricezione messaggi
-        socket.on("message", async msg => {
-            try
+            else
             {
+                //| Ricezione messaggi
                 if (msg == "alive");
                 else if (msg == "close" && type == "admin")
                 {
@@ -63,18 +60,12 @@ new Server({ server: require("../index.js") }).on("connection", async socket => 
                     }
                 }
             }
-            catch (e)
-            {
-                tag("errore", container.key, "bgRed");
-                console.error(e);
-                tag("/errore", "bgRed");
-            }
-        });
-    }
-    catch (e)
-    {
-        tag("errore", "bgRed");
-        console.error(e);
-        tag("/errore", "bgRed");
-    }
+        }
+        catch (e)
+        {
+            tag("errore", container?.key, "bgRed", undefined, false);
+            console.error(e);
+            tag("/errore", "bgRed");
+        }
+    });
 });

@@ -1,5 +1,4 @@
 
-//[WIP]: Rimuovi doppia riposta, (Controlla il session id), Ban (Non fa), Struttura generale (Brutta)
 //[Dependencies]: colors express mysql2 ws
 const colors = require("colors/safe");
 const express = require("express");

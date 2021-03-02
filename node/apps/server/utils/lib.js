@@ -3,12 +3,6 @@ const colors = require("colors/safe");
 const mysql = require("mysql2/promise");
 const util = require("util");
 
-//| Esegue un evento come promise
-function sync(sock, event = "message")
-{
-    return new Promise(x => sock.once(event, x));
-}
-
 //| Formatta una stringa per limitare la sua lunghezza a "k"
 function truncate(str, k)
 {
@@ -19,7 +13,7 @@ function truncate(str, k)
 }
 
 //| Stampa un messaggio generico
-function tag(str, num, outer, inner = "yellow")
+function tag(str, num, outer, inner = "yellow", autoclose = true)
 {
     console.log(
         colors.gray("<") +
@@ -32,7 +26,7 @@ function tag(str, num, outer, inner = "yellow")
                 colors.gray("]")
             ) : ""
         ) +
-        colors.gray(">")
+        colors.gray((autoclose ? " /" : "") + ">")
     );
 }
 
@@ -70,9 +64,8 @@ class scuola
         );
     }
 
-    static async add(sock)
+    static async add(sock, meta)
     {
-        const meta = JSON.parse(await sync(sock, "message"));
         const row = meta.row = await scuola.first(`SELECT * FROM ${ meta.type == "admin" || meta.type == "prof" ? "autoscuole" : "studenti" } WHERE id = ? LIMIT 1`, [ meta.id ]);
         if (!row) return tag("unknown", "brightMagenta") ?? null;;
         const key = row.id_autoscuola ?? row.id;
@@ -153,4 +146,4 @@ class scuola
     }
 };
 
-module.exports = { scuola, tag, truncate, sync };
+module.exports = { scuola, tag, truncate };
