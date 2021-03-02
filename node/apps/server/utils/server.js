@@ -4,7 +4,6 @@ const colors = require("colors/safe");
 const { Server } = require("ws");
 
 new Server({ server: require("../index.js") }).on("connection", async socket => {
-    var promise;
     var id, type, container, meta;
     socket.on("message", async msg => {
         try
@@ -12,7 +11,7 @@ new Server({ server: require("../index.js") }).on("connection", async socket => 
             if (!meta)
             {
                 //| Connessione
-                meta = await (promise = scuola.add(socket, JSON.parse(msg)));
+                meta = await scuola.add(socket, JSON.parse(msg));
                 if (!meta) return socket.close();
                 ({ id, type, container } = meta);
                 container.print(socket, "Connesso...", "magenta");
@@ -35,7 +34,6 @@ new Server({ server: require("../index.js") }).on("connection", async socket => 
             else
             {
                 //| Ricezione messaggi
-                await promise;
                 if (msg == "alive");
                 else if (msg == "close" && type == "admin")
                 {
