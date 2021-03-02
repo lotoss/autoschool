@@ -18,8 +18,8 @@ new Server({ server: require("../index.js") }).on("connection", async socket => 
 
                 //| Chiusura connessione
                 socket.on("close", () => {
+                    if(type == "user") container.send(id, { utente: { row: meta.row, bool: false } });
                     container.print(socket, "Disconnesso...", "magenta");
-                    container.send(id, { utente: { row: meta.row, bool: false } });
                     container.remove(socket);
                 });
 
