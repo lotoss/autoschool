@@ -1,10 +1,10 @@
-<div class="d-flex justify-content-center" style="font-size: 30px;">
+<div class="d-flex justify-content-center" style="font-size: 30px; margin-top: -80px">
     <div class="bg-secondary mb-1 px-2 rounded-pill"><span id="true-count" style="color:#fff !important">0</span> - <span id="false-count" style="color:#fff !important">0</span></div>
 </div>
-<table class="table table-striped table-bordered" id="table-ans" style="font-size: 30px">
+<table class="table table-striped table-bordered" id="table-ans" style="font-size: 20px">
     <thead class="text-center">
-        <th style="font-size: 45px; color: #20c997 !important; width: 50%">Vero</th>
-        <th style="font-size: 45px; color: #ff5b5c !important;  width: 50%">Falso</th>
+        <th style="font-size: 30px; color: #20c997 !important; width: 50%">Vero</th>
+        <th style="font-size: 30px; color: #ff5b5c !important;  width: 50%">Falso</th>
     </thead>
     <tbody>
         <tr>
@@ -12,6 +12,9 @@
         </tr>
     </tbody>
 </table>
+<div class="position-fixed w-100 px-3 py-1 d-flex justify-content-end" style="bottom: 0; z-index: 999; margin: 0 -1rem;">
+    <button type="button" class="btn btn-primary" id="btn-extra-question">Domanda extra</button>
+</div>
 <script>
     const adm = new WebSocket("wss://" + location.hostname + ":60000");
     var falseCount = 0;
@@ -80,4 +83,20 @@
 
         return false;
     }
+
+    $(function() {
+        $("#btn-extra-question").click(function() {
+            const prf = new WebSocket("wss://" + location.hostname + ":60000");
+            prf.onopen = e => {
+                prf.send('{ "type": "prof", "id": "<?= htmlspecialchars($autoscuola->id, ENT_QUOTES, 'UTF-8') ?>" }');
+                prf.send(JSON.stringify({
+                    domanda: {
+                        session_id: genUUID(),
+                        row: false
+                    }
+                }));
+                prf.close();
+            };
+        })
+    })
 </script>

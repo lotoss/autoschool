@@ -63,8 +63,7 @@
                 localStorage.setItem('session_id', session_id);
                 usr.send(JSON.stringify({
                     risposta: {
-                        answer: 'V',
-                        session_id
+                        answer: 'V'
                     }
                 }));
             })
@@ -74,8 +73,7 @@
                 localStorage.setItem('session_id', session_id);
                 usr.send(JSON.stringify({
                     risposta: {
-                        answer: 'F',
-                        session_id
+                        answer: 'F'
                     }
                 }));
             })

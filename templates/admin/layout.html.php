@@ -46,37 +46,38 @@
 <body class="vertical-layout vertical-menu-modern dark-layout 2-columns navbar-sticky footer-static pace-done menu-collapsed" data-open="click" data-menu="vertical-menu-modern" data-col="2-columns" data-layout="dark-layout">
 
     <!-- BEGIN: Header-->
-    <div class="header-navbar-shadow"></div>
-    <nav class="header-navbar main-header-navbar navbar-expand-lg navbar navbar-with-menu fixed-top navbar-dark">
-        <div class="navbar-wrapper">
-            <div class="navbar-container content">
-                <div class="navbar-collapse" id="navbar-mobile">
-                    <div class="mr-auto float-left bookmark-wrapper d-flex align-items-center">
-                        <ul class="nav navbar-nav">
-                            <li class="nav-item mobile-menu d-xl-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="javascript:void(0);"><i class="ficon bx bx-menu"></i></a></li>
-                        </ul>
-                        <?php if (!empty($breadcrumbs)) : ?>
+    <?php if ($_SERVER['REQUEST_URI'] !== '/admin/ricezione-risposte') : ?>
+        <div class="header-navbar-shadow"></div>
+        <nav class="header-navbar main-header-navbar navbar-expand-lg navbar navbar-with-menu fixed-top navbar-dark">
+            <div class="navbar-wrapper">
+                <div class="navbar-container content">
+                    <div class="navbar-collapse" id="navbar-mobile">
+                        <div class="mr-auto float-left bookmark-wrapper d-flex align-items-center">
                             <ul class="nav navbar-nav">
-                                <nav aria-label="breadcrumb">
-                                    <ol class="breadcrumb p-0 bg-transparent mt-1">
-                                        <?php foreach ($breadcrumbs as $key => $breadcrumb) : ?>
-                                            <li class="breadcrumb-item <?= $key == count($breadcrumbs) - 2 ? 'active' : '' ?>" aria-current="page"><?= $breadcrumb ?></li>
-                                        <?php endforeach; ?>
-                                    </ol>
-                                </nav>
+                                <li class="nav-item mobile-menu d-xl-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="javascript:void(0);"><i class="ficon bx bx-menu"></i></a></li>
                             </ul>
-                        <?php endif; ?>
-                        <?php if ($_GET['controller']  == 'argomentiController' && $_GET['action'] == 'viewGroup') : ?>
-                            <ul class="nav ml-4" id="tab-list" role="tablist">
-                                <li class="nav-item mr-2">
-                                    <button class="btn btn-primary" style="width: 155px; font-size: 20px" id="expl-tab" data-toggle="tab" href="#expl" role="tab" aria-controls="expl" aria-selected="true">Spiegazione</button>
-                                </li>
-                                <li class="nav-item">
-                                    <button class="btn btn-success" style="width: 155px; font-size: 20px" id="quiz-tab" data-toggle="tab" href="#quiz" role="tab" aria-controls="quiz" aria-selected="false">Quiz</button>
-                                </li>
-                            </ul>
-                        <?php endif; ?>
-                        <!-- <ul class="nav navbar-nav bookmark-icons">
+                            <?php if (!empty($breadcrumbs)) : ?>
+                                <ul class="nav navbar-nav">
+                                    <nav aria-label="breadcrumb">
+                                        <ol class="breadcrumb p-0 bg-transparent mt-1">
+                                            <?php foreach ($breadcrumbs as $key => $breadcrumb) : ?>
+                                                <li class="breadcrumb-item <?= $key == count($breadcrumbs) - 2 ? 'active' : '' ?>" aria-current="page"><?= $breadcrumb ?></li>
+                                            <?php endforeach; ?>
+                                        </ol>
+                                    </nav>
+                                </ul>
+                            <?php endif; ?>
+                            <?php if ($_GET['controller']  == 'argomentiController' && $_GET['action'] == 'viewGroup') : ?>
+                                <ul class="nav ml-4" id="tab-list" role="tablist">
+                                    <li class="nav-item mr-2">
+                                        <button class="btn btn-primary" style="width: 155px; font-size: 20px" id="expl-tab" data-toggle="tab" href="#expl" role="tab" aria-controls="expl" aria-selected="true">Spiegazione</button>
+                                    </li>
+                                    <li class="nav-item">
+                                        <button class="btn btn-success" style="width: 155px; font-size: 20px" id="quiz-tab" data-toggle="tab" href="#quiz" role="tab" aria-controls="quiz" aria-selected="false">Quiz</button>
+                                    </li>
+                                </ul>
+                            <?php endif; ?>
+                            <!-- <ul class="nav navbar-nav bookmark-icons">
                             <li class="nav-item d-none d-lg-block"><a class="nav-link" href="app-email.html" data-toggle="tooltip" data-placement="top" title="Email"><i class="ficon bx bx-envelope"></i></a></li>
                             <li class="nav-item d-none d-lg-block"><a class="nav-link" href="app-chat.html" data-toggle="tooltip" data-placement="top" title="Chat"><i class="ficon bx bx-chat"></i></a></li>
                             <li class="nav-item d-none d-lg-block"><a class="nav-link" href="app-todo.html" data-toggle="tooltip" data-placement="top" title="Todo"><i class="ficon bx bx-check-circle"></i></a></li>
@@ -91,80 +92,80 @@
                                 </div>
                             </li>
                         </ul>-->
-                    </div>
-                    <ul class="nav navbar-nav float-right">
-                        <!-- <li class="dropdown dropdown-language nav-item"><a class="dropdown-toggle nav-link" id="dropdown-flag" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="flag-icon flag-icon-us"></i><span class="selected-language">English</span></a>
+                        </div>
+                        <ul class="nav navbar-nav float-right">
+                            <!-- <li class="dropdown dropdown-language nav-item"><a class="dropdown-toggle nav-link" id="dropdown-flag" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="flag-icon flag-icon-us"></i><span class="selected-language">English</span></a>
                             <div class="dropdown-menu" aria-labelledby="dropdown-flag"><a class="dropdown-item" href="javascript:void(0);" data-language="fr"><i class="flag-icon flag-icon-us mr-50"></i> English</a><a class="dropdown-item" href="javascript:void(0);" data-language="fr"><i class="flag-icon flag-icon-fr mr-50"></i> French</a><a class="dropdown-item" href="javascript:void(0);" data-language="de"><i class="flag-icon flag-icon-de mr-50"></i> German</a><a class="dropdown-item" href="javascript:void(0);" data-language="pt"><i class="flag-icon flag-icon-pt mr-50"></i> Portuguese</a></div>
                         </li> -->
-                        <li class="nav-item d-lg-block">
-                            <div class="custom-control custom-switch mt-1">
-                                <input type="checkbox" class="custom-control-input" id="switch-work-mode" <?= isset($_SESSION['work_mode']) ? 'checked' : '' ?>>
-                                <label class="custom-control-label custom-switch-label" for="switch-work-mode">Modalità lavoro</label>
-                            </div>
-                        </li>
-                        <script>
-                            $(function() {
-                                $("#switch-work-mode").change(function(e) {
-                                    location.href = "/admin/setworkmode?hash=" + location.hash;
-                                })
-                            })
-                        </script>
-                        <?php if ($_GET['controller'] == 'argomentiController' && $_GET['action'] == 'viewGroup') : ?>
                             <li class="nav-item d-lg-block">
                                 <div class="custom-control custom-switch mt-1">
-                                    <input type="checkbox" class="custom-control-input" id="switch-view-ans" <?= !empty($_GET['view_ans']) && $_GET['view_ans'] == 'true' ? 'checked' : '' ?>>
-                                    <label class="custom-control-label custom-switch-label" for="switch-view-ans">Risposte</label>
+                                    <input type="checkbox" class="custom-control-input" id="switch-work-mode" <?= isset($_SESSION['work_mode']) ? 'checked' : '' ?>>
+                                    <label class="custom-control-label custom-switch-label" for="switch-work-mode">Modalità lavoro</label>
                                 </div>
-                            </li>
-                        <?php endif; ?>
-                        <style>
-                            .custom-switch-label {
-                                margin-right: 15px !important;
-                                height: auto !important;
-                                vertical-align: middle !important;
-                                text-align: center;
-                                width: 120px !important;
-                            }
-
-                            .custom-switch-label::before {
-                                position: relative !important;
-                                margin: 0 auto 8px !important;
-                            }
-
-                            .custom-switch-label::after {
-                                left: 42px !important;
-                            }
-                        </style>
-                        <?php if (isset($selectPatente) && $selectPatente) : ?>
-                            <li class="nav-item d-lg-block">
-                                <select name="patente" class="mt-1 custom-select">
-                                    <option value="B" <?= !isset($_SESSION['patente']) || (isset($_SESSION['patente']) && $_SESSION['patente'] == 'B') ? 'selected' : '' ?>>Patente B</option>
-                                    <option value="AM" <?= isset($_SESSION['patente']) && $_SESSION['patente'] == 'AM' ? 'selected' : '' ?>>Patente AM</option>
-                                </select>
                             </li>
                             <script>
                                 $(function() {
-                                    $("select[name=patente]").change(function() {
-                                        location.href = `/admin/setpatente?patente=${$(this).val()}`;
+                                    $("#switch-work-mode").change(function(e) {
+                                        location.href = "/admin/setworkmode?hash=" + location.hash;
                                     })
                                 })
                             </script>
-                        <?php endif; ?>
-                        <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-expand"><i class="ficon bx bx-fullscreen"></i></a></li>
-                        <?php if (isset($search)) : ?>
-                            <li class="nav-item nav-search"><a class="nav-link nav-link-search"><i class="ficon bx bx-search"></i></a>
-                                <div class="search-input">
-                                    <div class="search-input-icon"><i class="bx bx-search primary"></i></div>
-                                    <form action="/admin/lezione/search" method="get">
-                                        <input type="hidden" name="controller" value="<?= htmlspecialchars($_GET['controller'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
-                                        <input class="input" type="text" name="q" autocomplete="off" placeholder="Cerca tra argomenti, gruppi e domande..." tabindex="-1" data-search="template-search" value="<?= htmlspecialchars($_GET['q'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
-                                        <div class="search-input-close"><i class="bx bx-x"></i></div>
-                                        <ul class="search-list"></ul>
-                                    </form>
-                                </div>
-                            </li>
-                        <?php endif; ?>
-                        <!-- <li class="dropdown dropdown-notification nav-item"><a class="nav-link nav-link-label" href="javascript:void(0);" data-toggle="dropdown"><i class="ficon bx bx-bell bx-tada bx-flip-horizontal"></i><span class="badge badge-pill badge-danger badge-up">5</span></a>
+                            <?php if ($_GET['controller'] == 'argomentiController' && $_GET['action'] == 'viewGroup') : ?>
+                                <li class="nav-item d-lg-block">
+                                    <div class="custom-control custom-switch mt-1">
+                                        <input type="checkbox" class="custom-control-input" id="switch-view-ans" <?= !empty($_GET['view_ans']) && $_GET['view_ans'] == 'true' ? 'checked' : '' ?>>
+                                        <label class="custom-control-label custom-switch-label" for="switch-view-ans">Risposte</label>
+                                    </div>
+                                </li>
+                            <?php endif; ?>
+                            <style>
+                                .custom-switch-label {
+                                    margin-right: 15px !important;
+                                    height: auto !important;
+                                    vertical-align: middle !important;
+                                    text-align: center;
+                                    width: 120px !important;
+                                }
+
+                                .custom-switch-label::before {
+                                    position: relative !important;
+                                    margin: 0 auto 8px !important;
+                                }
+
+                                .custom-switch-label::after {
+                                    left: 42px !important;
+                                }
+                            </style>
+                            <?php if (isset($selectPatente) && $selectPatente) : ?>
+                                <li class="nav-item d-lg-block">
+                                    <select name="patente" class="mt-1 custom-select">
+                                        <option value="B" <?= !isset($_SESSION['patente']) || (isset($_SESSION['patente']) && $_SESSION['patente'] == 'B') ? 'selected' : '' ?>>Patente B</option>
+                                        <option value="AM" <?= isset($_SESSION['patente']) && $_SESSION['patente'] == 'AM' ? 'selected' : '' ?>>Patente AM</option>
+                                    </select>
+                                </li>
+                                <script>
+                                    $(function() {
+                                        $("select[name=patente]").change(function() {
+                                            location.href = `/admin/setpatente?patente=${$(this).val()}`;
+                                        })
+                                    })
+                                </script>
+                            <?php endif; ?>
+                            <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-expand"><i class="ficon bx bx-fullscreen"></i></a></li>
+                            <?php if (isset($search)) : ?>
+                                <li class="nav-item nav-search"><a class="nav-link nav-link-search"><i class="ficon bx bx-search"></i></a>
+                                    <div class="search-input">
+                                        <div class="search-input-icon"><i class="bx bx-search primary"></i></div>
+                                        <form action="/admin/lezione/search" method="get">
+                                            <input type="hidden" name="controller" value="<?= htmlspecialchars($_GET['controller'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                            <input class="input" type="text" name="q" autocomplete="off" placeholder="Cerca tra argomenti, gruppi e domande..." tabindex="-1" data-search="template-search" value="<?= htmlspecialchars($_GET['q'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                            <div class="search-input-close"><i class="bx bx-x"></i></div>
+                                            <ul class="search-list"></ul>
+                                        </form>
+                                    </div>
+                                </li>
+                            <?php endif; ?>
+                            <!-- <li class="dropdown dropdown-notification nav-item"><a class="nav-link nav-link-label" href="javascript:void(0);" data-toggle="dropdown"><i class="ficon bx bx-bell bx-tada bx-flip-horizontal"></i><span class="badge badge-pill badge-danger badge-up">5</span></a>
                             <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
                                 <li class="dropdown-menu-header">
                                     <div class="dropdown-header px-1 py-75 d-flex justify-content-between"><span class="notification-title">7 new Notification</span><span class="text-bold-400 cursor-pointer">Mark all as read</span></div>
@@ -279,7 +280,7 @@
                                 <li class="dropdown-menu-footer"><a class="dropdown-item p-50 text-primary justify-content-center" href="javascript:void(0)">Read all notifications</a></li>
                             </ul>
                         </li> -->
-                        <!--<li class="dropdown dropdown-user nav-item">
+                            <!--<li class="dropdown dropdown-user nav-item">
                             <a class="dropdown-toggle nav-link dropdown-user-link" href="javascript:void(0);" data-toggle="dropdown">
                                 <div class="user-nav d-sm-flex d-none">
                                     <span class="user-name"><?= htmlspecialchars($autoscuola->nome, ENT_QUOTES, 'UTF-8') ?></span>
@@ -298,99 +299,101 @@
                                 <div class="dropdown-divider mb-0"></div><a class="dropdown-item" href="auth-login.html"><i class="bx bx-power-off mr-50"></i> Logout</a>
                             </div>
                         </li>-->
-                    </ul>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
-    </nav>
-    <!-- END: Header-->
+        </nav>
+        <!-- END: Header-->
 
 
-    <!-- BEGIN: Main Menu-->
-    <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow" data-scroll-to-active="true">
-        <div class="navbar-header">
-            <ul class="nav navbar-nav flex-row">
-                <li class="nav-item mr-auto">
-                    <a class="navbar-brand" href="/html/ltr/vertical-menu-template-dark/index.html">
-                        <div class="brand-logo">
-                            <svg class="logo" width="26px" height="26px" viewbox="0 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                <title>icon</title>
-                                <defs>
-                                    <lineargradient id="linearGradient-1" x1="50%" y1="0%" x2="50%" y2="100%">
-                                        <stop stop-color="#5A8DEE" offset="0%"></stop>
-                                        <stop stop-color="#699AF9" offset="100%"></stop>
-                                    </lineargradient>
-                                    <lineargradient id="linearGradient-2" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop stop-color="#FDAC41" offset="0%"></stop>
-                                        <stop stop-color="#E38100" offset="100%"></stop>
-                                    </lineargradient>
-                                </defs>
-                                <g id="Sprite" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                    <g id="sprite" transform="translate(-69.000000, -61.000000)">
-                                        <g id="Group" transform="translate(17.000000, 15.000000)">
-                                            <g id="icon" transform="translate(52.000000, 46.000000)">
-                                                <path id="Combined-Shape" d="M13.5909091,1.77272727 C20.4442608,1.77272727 26,7.19618701 26,13.8863636 C26,20.5765403 20.4442608,26 13.5909091,26 C6.73755742,26 1.18181818,20.5765403 1.18181818,13.8863636 C1.18181818,13.540626 1.19665566,13.1982714 1.22574292,12.8598734 L6.30410592,12.859962 C6.25499466,13.1951893 6.22958398,13.5378796 6.22958398,13.8863636 C6.22958398,17.8551125 9.52536149,21.0724191 13.5909091,21.0724191 C17.6564567,21.0724191 20.9522342,17.8551125 20.9522342,13.8863636 C20.9522342,9.91761479 17.6564567,6.70030817 13.5909091,6.70030817 C13.2336969,6.70030817 12.8824272,6.72514561 12.5388136,6.77314791 L12.5392575,1.81561642 C12.8859498,1.78721495 13.2366963,1.77272727 13.5909091,1.77272727 Z"></path>
-                                                <path id="Combined-Shape" d="M13.8863636,4.72727273 C18.9447899,4.72727273 23.0454545,8.82793741 23.0454545,13.8863636 C23.0454545,18.9447899 18.9447899,23.0454545 13.8863636,23.0454545 C8.82793741,23.0454545 4.72727273,18.9447899 4.72727273,13.8863636 C4.72727273,13.5378966 4.74673291,13.1939746 4.7846258,12.8556254 L8.55057141,12.8560055 C8.48653249,13.1896162 8.45300462,13.5340745 8.45300462,13.8863636 C8.45300462,16.887125 10.8856023,19.3197227 13.8863636,19.3197227 C16.887125,19.3197227 19.3197227,16.887125 19.3197227,13.8863636 C19.3197227,10.8856023 16.887125,8.45300462 13.8863636,8.45300462 C13.529522,8.45300462 13.180715,8.48740462 12.8430777,8.55306931 L12.8426531,4.78608796 C13.1851829,4.7472336 13.5334422,4.72727273 13.8863636,4.72727273 Z" fill="#4880EA"></path>
-                                                <path id="Combined-Shape" d="M13.5909091,1.77272727 C20.4442608,1.77272727 26,7.19618701 26,13.8863636 C26,20.5765403 20.4442608,26 13.5909091,26 C6.73755742,26 1.18181818,20.5765403 1.18181818,13.8863636 C1.18181818,13.540626 1.19665566,13.1982714 1.22574292,12.8598734 L6.30410592,12.859962 C6.25499466,13.1951893 6.22958398,13.5378796 6.22958398,13.8863636 C6.22958398,17.8551125 9.52536149,21.0724191 13.5909091,21.0724191 C17.6564567,21.0724191 20.9522342,17.8551125 20.9522342,13.8863636 C20.9522342,9.91761479 17.6564567,6.70030817 13.5909091,6.70030817 C13.2336969,6.70030817 12.8824272,6.72514561 12.5388136,6.77314791 L12.5392575,1.81561642 C12.8859498,1.78721495 13.2366963,1.77272727 13.5909091,1.77272727 Z" fill="url(#linearGradient-1)"></path>
-                                                <rect id="Rectangle" x="0" y="0" width="7.68181818" height="7.68181818"></rect>
-                                                <rect id="Rectangle" fill="url(#linearGradient-2)" x="0" y="0" width="7.68181818" height="7.68181818"></rect>
+        <!-- BEGIN: Main Menu-->
+        <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow" data-scroll-to-active="true">
+            <div class="navbar-header">
+                <ul class="nav navbar-nav flex-row">
+                    <li class="nav-item mr-auto">
+                        <a class="navbar-brand" href="/html/ltr/vertical-menu-template-dark/index.html">
+                            <div class="brand-logo">
+                                <svg class="logo" width="26px" height="26px" viewbox="0 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                    <title>icon</title>
+                                    <defs>
+                                        <lineargradient id="linearGradient-1" x1="50%" y1="0%" x2="50%" y2="100%">
+                                            <stop stop-color="#5A8DEE" offset="0%"></stop>
+                                            <stop stop-color="#699AF9" offset="100%"></stop>
+                                        </lineargradient>
+                                        <lineargradient id="linearGradient-2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop stop-color="#FDAC41" offset="0%"></stop>
+                                            <stop stop-color="#E38100" offset="100%"></stop>
+                                        </lineargradient>
+                                    </defs>
+                                    <g id="Sprite" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <g id="sprite" transform="translate(-69.000000, -61.000000)">
+                                            <g id="Group" transform="translate(17.000000, 15.000000)">
+                                                <g id="icon" transform="translate(52.000000, 46.000000)">
+                                                    <path id="Combined-Shape" d="M13.5909091,1.77272727 C20.4442608,1.77272727 26,7.19618701 26,13.8863636 C26,20.5765403 20.4442608,26 13.5909091,26 C6.73755742,26 1.18181818,20.5765403 1.18181818,13.8863636 C1.18181818,13.540626 1.19665566,13.1982714 1.22574292,12.8598734 L6.30410592,12.859962 C6.25499466,13.1951893 6.22958398,13.5378796 6.22958398,13.8863636 C6.22958398,17.8551125 9.52536149,21.0724191 13.5909091,21.0724191 C17.6564567,21.0724191 20.9522342,17.8551125 20.9522342,13.8863636 C20.9522342,9.91761479 17.6564567,6.70030817 13.5909091,6.70030817 C13.2336969,6.70030817 12.8824272,6.72514561 12.5388136,6.77314791 L12.5392575,1.81561642 C12.8859498,1.78721495 13.2366963,1.77272727 13.5909091,1.77272727 Z"></path>
+                                                    <path id="Combined-Shape" d="M13.8863636,4.72727273 C18.9447899,4.72727273 23.0454545,8.82793741 23.0454545,13.8863636 C23.0454545,18.9447899 18.9447899,23.0454545 13.8863636,23.0454545 C8.82793741,23.0454545 4.72727273,18.9447899 4.72727273,13.8863636 C4.72727273,13.5378966 4.74673291,13.1939746 4.7846258,12.8556254 L8.55057141,12.8560055 C8.48653249,13.1896162 8.45300462,13.5340745 8.45300462,13.8863636 C8.45300462,16.887125 10.8856023,19.3197227 13.8863636,19.3197227 C16.887125,19.3197227 19.3197227,16.887125 19.3197227,13.8863636 C19.3197227,10.8856023 16.887125,8.45300462 13.8863636,8.45300462 C13.529522,8.45300462 13.180715,8.48740462 12.8430777,8.55306931 L12.8426531,4.78608796 C13.1851829,4.7472336 13.5334422,4.72727273 13.8863636,4.72727273 Z" fill="#4880EA"></path>
+                                                    <path id="Combined-Shape" d="M13.5909091,1.77272727 C20.4442608,1.77272727 26,7.19618701 26,13.8863636 C26,20.5765403 20.4442608,26 13.5909091,26 C6.73755742,26 1.18181818,20.5765403 1.18181818,13.8863636 C1.18181818,13.540626 1.19665566,13.1982714 1.22574292,12.8598734 L6.30410592,12.859962 C6.25499466,13.1951893 6.22958398,13.5378796 6.22958398,13.8863636 C6.22958398,17.8551125 9.52536149,21.0724191 13.5909091,21.0724191 C17.6564567,21.0724191 20.9522342,17.8551125 20.9522342,13.8863636 C20.9522342,9.91761479 17.6564567,6.70030817 13.5909091,6.70030817 C13.2336969,6.70030817 12.8824272,6.72514561 12.5388136,6.77314791 L12.5392575,1.81561642 C12.8859498,1.78721495 13.2366963,1.77272727 13.5909091,1.77272727 Z" fill="url(#linearGradient-1)"></path>
+                                                    <rect id="Rectangle" x="0" y="0" width="7.68181818" height="7.68181818"></rect>
+                                                    <rect id="Rectangle" fill="url(#linearGradient-2)" x="0" y="0" width="7.68181818" height="7.68181818"></rect>
+                                                </g>
                                             </g>
                                         </g>
                                     </g>
-                                </g>
-                            </svg>
-                        </div>
-                        <h2 class="brand-text mb-0">Autoscuola</h2>
-                    </a>
-                </li>
-                <li class="nav-item nav-toggle">
-                    <a class="nav-link modern-nav-toggle pr-0" data-toggle="collapse"><i class="bx bx-x d-block d-xl-none font-medium-4 primary"></i><i class="toggle-icon bx bx-disc font-medium-4 d-none d-xl-block primary" data-ticon="bx-disc"></i></a>
-                </li>
-            </ul>
+                                </svg>
+                            </div>
+                            <h2 class="brand-text mb-0">Autoscuola</h2>
+                        </a>
+                    </li>
+                    <li class="nav-item nav-toggle">
+                        <a class="nav-link modern-nav-toggle pr-0" data-toggle="collapse"><i class="bx bx-x d-block d-xl-none font-medium-4 primary"></i><i class="toggle-icon bx bx-disc font-medium-4 d-none d-xl-block primary" data-ticon="bx-disc"></i></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="shadow-bottom"></div>
+            <div class="main-menu-content">
+                <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation" data-icon-style="lines">
+                    <li class="nav-item">
+                        <a href="#">
+                            <i class="menu-livicon" data-icon="desktop"></i>
+                            <span class="menu-title text-truncate" data-i18n="Lezione">Lezione</span>
+                            <!--<span class="badge badge-light-danger badge-pill badge-round float-right mr-50 ml-auto">2</span>-->
+                        </a>
+                        <ul class="menu-content">
+                            <li <?= isset($_GET['controller']) && $_GET['controller'] == 'argomentiController' ? 'class="active"' : '' ?>>
+                                <a class="d-flex align-items-center" href="/admin/lezione?controller=argomentiController">
+                                    <i class="bx bx-right-arrow-alt"></i>
+                                    <span class="menu-item text-truncate" data-i18n="Argomenti">Argomenti</span>
+                                </a>
+                            </li>
+                            <li <?= isset($_GET['controller']) && $_GET['controller'] == 'cartelloneController' ? 'class="active"' : '' ?>>
+                                <a class="d-flex align-items-center" href="/admin/lezione?controller=cartelloneController">
+                                    <i class="bx bx-right-arrow-alt"></i>
+                                    <span class="menu-item text-truncate" data-i18n="Cartellone">Cartellone</span>
+                                </a>
+                            </li>
+                            <li <?= $_SERVER['REQUEST_URI'] == '/admin/ricezione-risposte' ? 'class="active"' : '' ?>>
+                                <a class="d-flex align-items-center" href="/admin/ricezione-risposte">
+                                    <i class="bx bx-right-arrow-alt"></i>
+                                    <span class="menu-item text-truncate" data-i18n="Ricezione">Ricezione</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="d-flex align-items-center" href="/admin/studenti">
+                            <i class="menu-livicon" data-icon="users"></i>
+                            <span class="menu-item text-truncate" data-i18n="Studenti">Studenti</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <div class="shadow-bottom"></div>
-        <div class="main-menu-content">
-            <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation" data-icon-style="lines">
-                <li class="nav-item">
-                    <a href="#">
-                        <i class="menu-livicon" data-icon="desktop"></i>
-                        <span class="menu-title text-truncate" data-i18n="Lezione">Lezione</span>
-                        <!--<span class="badge badge-light-danger badge-pill badge-round float-right mr-50 ml-auto">2</span>-->
-                    </a>
-                    <ul class="menu-content">
-                        <li <?= isset($_GET['controller']) && $_GET['controller'] == 'argomentiController' ? 'class="active"' : '' ?>>
-                            <a class="d-flex align-items-center" href="/admin/lezione?controller=argomentiController">
-                                <i class="bx bx-right-arrow-alt"></i>
-                                <span class="menu-item text-truncate" data-i18n="Argomenti">Argomenti</span>
-                            </a>
-                        </li>
-                        <li <?= isset($_GET['controller']) && $_GET['controller'] == 'cartelloneController' ? 'class="active"' : '' ?>>
-                            <a class="d-flex align-items-center" href="/admin/lezione?controller=cartelloneController">
-                                <i class="bx bx-right-arrow-alt"></i>
-                                <span class="menu-item text-truncate" data-i18n="Cartellone">Cartellone</span>
-                            </a>
-                        </li>
-                        <li <?= $_SERVER['REQUEST_URI'] == '/admin/ricezione-risposte' ? 'class="active"' : '' ?>>
-                            <a class="d-flex align-items-center" href="/admin/ricezione-risposte">
-                                <i class="bx bx-right-arrow-alt"></i>
-                                <span class="menu-item text-truncate" data-i18n="Ricezione">Ricezione</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a class="d-flex align-items-center" href="/admin/studenti">
-                        <i class="menu-livicon" data-icon="users"></i>
-                        <span class="menu-item text-truncate" data-i18n="Studenti">Studenti</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <!-- END: Main Menu-->
+        <!-- END: Main Menu-->
+    <?php endif; ?>
+
 
     <!-- BEGIN: Content-->
-    <div class="app-content content">
+    <div class="app-content content" <?= $_SERVER['REQUEST_URI'] === '/admin/ricezione-risposte' ? 'style="margin-left: 0 !important;"' : '' ?>>
         <div class="content-overlay"></div>
         <div class="content-wrapper">
             <div class="content-header row">
