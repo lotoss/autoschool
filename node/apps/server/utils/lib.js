@@ -73,10 +73,6 @@ class scuola
         if (container.banned.has(meta.id)) return tag("banned", meta.id, "brightMagenta", "brightGreen") ?? null;
         container.clients.set(sock, meta);
         meta.head = scuola.head(meta);
-        sock.on("close", () => {
-            container.print(sock, "Disconnesso...", "magenta");
-            container.remove(sock);
-        });
         return meta;
     }
 

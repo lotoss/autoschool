@@ -16,10 +16,17 @@ new Server({ server: require("../index.js") }).on("connection", async socket => 
                 ({ id, type, container } = meta);
                 container.print(socket, "Connesso...", "magenta");
 
+                //| Chiusura connessione
+                socket.on("close", () => {
+                    container.print(socket, "Disconnesso...", "magenta");
+                    container.send(id, { utente: { row: meta.row, bool: false } });
+                    container.remove(socket);
+                });
+
                 //| Sincronizzazione dati con sessione corrente
                 if (container.domanda) socket.send(container.domanda); // Domanda (Tutti)
                 if (type == "user")
-                    container.send(id, { utente: { row: meta.row } }); // Utente corrente (Admin)
+                    container.send(id, { utente: { row: meta.row, bool: true } }); // Utente corrente (Admin)
                 else if (type == "admin")
                 {
                     Object.values(container.risposte).forEach(x => // Risposte (Admin)
@@ -27,7 +34,7 @@ new Server({ server: require("../index.js") }).on("connection", async socket => 
                     );
                     container.clients.forEach(({ type, row }) => // Utenti precedentemente connessi (Admin)
                         type == "user" &&
-                        container.send(id, { utente: { row } })
+                        container.send(id, { utente: { row, bool: true } })
                     );
                 }
             }
