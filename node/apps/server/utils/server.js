@@ -35,6 +35,7 @@ new Server({ server: require("../index.js") }).on("connection", async socket => 
 
         //| Ricezione messaggi
         socket.on("message", async msg => {
+            console.log(msg);
             try
             {
                 if (msg == "alive");
