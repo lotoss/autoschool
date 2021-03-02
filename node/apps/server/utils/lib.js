@@ -26,7 +26,7 @@ function tag(str, num, outer, inner = "yellow", autoclose = true)
                 colors.gray("]")
             ) : ""
         ) +
-        colors.gray((autoclose ? " /" : "") + ">")
+        colors.gray((autoclose ? "/" : "") + ">")
     );
 }
 
