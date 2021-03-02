@@ -1,11 +1,3 @@
-<ul class="nav nav-tabs" id="tab-list" role="tablist">
-    <li class="nav-item">
-        <a class="nav-link" id="expl-tab" data-toggle="tab" href="#expl" role="tab" aria-controls="expl" aria-selected="true">Spiegazione</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="quiz-tab" data-toggle="tab" href="#quiz" role="tab" aria-controls="quiz" aria-selected="false">Quiz</a>
-    </li>
-</ul>
 <div class="tab-content bg-transparent px-0" id="tab-content">
     <div class="tab-pane fade" id="expl" role="tabpanel" aria-labelledby="expl-tab">
         <h2 class="text-center mb-3"><?= htmlspecialchars(ucfirst($gruppo->descrizione), ENT_QUOTES, 'UTF-8') ?></h2>
@@ -52,227 +44,8 @@
                 </div>
             <?php endif; ?>
         </div>
-
-
         <script>
             const upload_max_filesize = <?= (int) substr(ini_get('upload_max_filesize'), 0, -1) * 1e+6 ?>;
-
-            class JqueryClass {
-                constructor() {
-                    this.id = this.genId();
-                }
-
-                genId() {
-                    return Math.random().toString(36).substr(2, 9);
-                }
-
-                display() {
-                    if ($(this.target).length > 0) {
-                        $(this.target).html(this.html);
-                    } else {
-                        console.error(`Nessun target "${this.target}" definito`);
-                    }
-                }
-            }
-
-            class MediaSearch extends JqueryClass {
-                constructor() {
-                    super();
-                    this.target = ".media-search";
-                    this.containerId = "media-search-container" + this.id;
-                    this.inputId = "media-search-input-" + this.id;
-                    this.input = "#" + this.inputId;
-                    this.container = "#" + this.containerId;
-                    this.resultContainerId = "media-search-result-container-" + this.id;
-                    this.resultContainer = "#" + this.resultContainerId;
-                    this.mediaResultListClass = "li-media-search-result-" + this.id;
-                    this.mediaResultList = "." + this.mediaResultListClass;
-                    this.selectedResultContainerId = "selected-result-container" + this.id;
-                    this.selectedResultContainer = "#" + this.selectedResultContainerId;
-                    this.html = `
-                        <div class="form-group mb-0 mt-1 border-top pt-1" id="${this.containerId}">
-                            <h6 class="text-white mb-1">Vuoi collegare un argomento o una domanda a questa immagine?</h6>
-                            <div class="form-group has-search mb-0">
-                                <i class='bx bx-search-alt-2 form-control-feedback' style="margin-top: 2px"></i>
-                                <input type="text" class="form-control text-white" id="${this.inputId}" autocomplete="off" placeholder="Cerca una spiegazione da collegare a questa immagine">
-                            </div>
-                            <ul class="search-list list-unstyled rounded" style="font-size: 18px; max-height: 200px; overflow-y: overlay; margin: 0 0 0 0;" id="${this.resultContainerId}"></ul>
-                        </div>`;
-                }
-
-                search(q) {
-                    if (q.trim() !== "") {
-                        fetch('?controller=argomentiController&action=searchExpl&q=' + q.trim().replace(/\s{2,}/g, " "))
-                            .then(response => response.json())
-                            .then(data => {
-                                $(this.resultContainer).html('').removeClass('shadow-lg border');
-                                if (data.results.gruppi.length > 0 || data.results.domande.length > 0) {
-                                    $(this.resultContainer).addClass("shadow-lg border");
-                                    data.results.gruppi.forEach(gruppo => {
-                                        $(this.resultContainer).append(`
-                                            <li title="Argomento" data-id-gruppo="${gruppo.id.escape()}" class="${this.mediaResultListClass}" style="color: #dfe3e7 !important"><i class='bx bx-book-open' style="margin-right: 4px"></i>${gruppo.descrizione.escape().charAt(0).toUpperCase() + gruppo.descrizione.slice(1)}</li>
-                                        `)
-                                    })
-
-                                    data.results.domande.forEach(domanda => {
-                                        $(this.resultContainer).append(`
-                                            <li title="Domanda" data-id-gruppo="${domanda.id_gruppo.escape()}" data-id-domanda="${domanda.id.escape()}" class="${this.mediaResultListClass}" style="color: #dfe3e7 !important"><i class='bx bx-question-mark' style="margin-right: 4px"></i>${domanda.domanda.escape().charAt(0).toUpperCase() + domanda.domanda.slice(1)}</li>
-                                        `)
-                                    })
-                                }
-                            });
-                    } else {
-                        $(this.resultContainer).html('').removeClass('shadow-lg border');
-                    }
-                }
-
-                remove() {
-                    $(this.container).remove();
-                    $(this.selectedResultContainer).remove();
-                }
-
-            }
-
-            class Media extends JqueryClass {
-                constructor(mediaSearch = false) {
-                    super();
-                    this.target = ".media-uploader";
-                    this.inputName = "media-uploader-file";
-                    this.containerId = "media-uploader-container-" + this.id;
-                    this.container = "#" + this.containerId;
-                    this.inputId = 'media-uploader-file-' + this.id;
-                    this.input = "#" + this.inputId;
-                    this.inputLabel = `label[for="${this.inputId}"]`;
-                    this.removeFileButtonName = "rm-media-uploader-file" + '-' + this.id;
-                    this.removeFileButton = "#" + this.removeFileButtonName;
-                    this.uploadedFile;
-                    if (mediaSearch) {
-                        this.mediaSearch = new MediaSearch();
-                    }
-                    this.html = `
-                        <div id="">
-                            <h6>Aggiungi un'immagine o un video</h6>
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" name="${this.inputName}" id="${this.inputId}" accept="image/jpg, image/jpeg, image/gif, image/png, video/mov, video/mp4">
-                                <small class="form-text text-white">Grandezza massima supportata: ${Math.round(upload_max_filesize / 1e+6)}MB</small>
-                                <label class="custom-file-label" for="${this.inputId}">Carica un'immagine o un video</label>
-                                <div class="invalid-feedback"></div>
-                            </div>
-                        </div>
-                    `;
-                }
-
-                upload() {
-                    this.uploadedFile = undefined;
-                    $(this.input).removeClass("is-invalid").attr("title", "Nessun file selezionato");
-                    $(this.inputLabel).text("Carica un'immagine o un video");
-                    $(this.removeFileButton).remove();
-                    let file = Array.from($(this.input)[0].files)[0];
-                    let exts = Array.from($(this.input).attr("accept").split(", "));
-                    let label = "";
-                    try {
-                        if (file.name !== "") {
-                            if (exts.includes(file.type)) {
-                                label += file.name + ', ';
-                            } else {
-                                throw `Errore in "${file.name.escape()}": estensione non supportata`;
-                            }
-                            let filesize = file.size;
-                            if (filesize > upload_max_filesize) {
-                                throw `Errore in "${file.name.escape()}": dimensione file (${Math.round(filesize / 1e+6)}MB) oltre i limit previsti: ${Math.round(upload_max_filesize / 1e+6)}MB`;
-                            }
-
-                            label = label.substring(0, label.length - 2);
-                            $(this.inputLabel).text(label);
-                            $(this.input).attr("title", label).after(`
-                                <button type="button" id="${this.removeFileButtonName}" class="close" style="outline:0; top: 6px; position: absolute; right: -20px; z-index: 3;" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            `)
-                            this.uploadedFile = file;
-                            return true;
-                        }
-                    } catch (e) {
-                        $(this.input).addClass("is-invalid").val("").parent().find(".invalid-feedback").text(e);
-                    }
-
-                    return false;
-                }
-            }
-
-            const media = new Media({
-                mediaSearch: true
-            });
-
-            $(document).on("change", media.input, function() {
-                if (!media.upload()) {
-                    if (media.mediaSearch) {
-                        media.mediaSearch.remove();
-                    }
-                    return false;
-                }
-
-                if (media.uploadedFile.type.substring(0, media.uploadedFile.type.indexOf("/")) != "video" && $("#link-to-container").length == 0 && $("#selected-result-container").length == 0) {
-                    $(media.input).parent().after('<div class="media-search"></div>');
-                    const search = new MediaSearch();
-                    search.display();
-                }
-            })
-
-            $(document).on("click", media.removeFileButton, function() {
-                $(media.input).removeClass("is-invalid").attr("title", "Nessun file selezionato").val("");
-                $(media.inputLabel).text("Carica un'immagine o un video");
-                $(media.mediaSearch.containerId).remove();
-                $(media.mediaSearch.selectedResultContainer).remove();
-                $(this).remove();
-            })
-
-            $(document).on("keypress", media.mediaSearch.input, function(e) {
-                media.mediaSearch.search($(this).val() + String.fromCharCode(e.keyCode));
-            })
-
-            $(document).on("keyup", media.mediaSearch.input, function(e) {
-                if (e.keyCode == 8) {
-                    media.mediaSearch.search($(this).val());
-                }
-            })
-
-            $(document).on("keydown", media.mediaSearch.input, function(e) {
-                if (e.keyCode == 13) {
-                    media.mediaSearch.search(e.target.value);
-                    e.preventDefault();
-                }
-            })
-
-            $(document).bind("paste", media.mediaSearch.input, function(e) {
-                media.mediaSearch.search(e.originalEvent.clipboardData.getData('text'));
-            })
-
-            $(document).on("click", media.mediaSearch.mediaResultList, function() {
-                var label = $(this).text();
-                var id_gruppo = $(this).attr("data-id-gruppo");
-                var id_domanda = $(this).attr("data-id-domanda");
-
-                $(media.mediaSearch.container).replaceWith(`
-                    <div id="${media.mediaSearch.selectedResultContainer}" class="position-relative rounded shadow-sm mt-2 bg-dark" style="padding: 6px 10px; font-size: 16px; background: #1A233A">
-                        <h6 class="text-success"><i class='bx bx-list-check' style="color: inherit; margin-right: 4px; vertical-align: text-top"></i>${id_domanda != undefined ? 'Domanda selezionata' : 'Argomento selezionato'}</h6>    
-                        <input name="id_gruppo_link" type="hidden" value="${id_gruppo}">
-                        <input name="id_domanda_link" type="hidden" value="${id_domanda != undefined ? id_domanda : ''}">
-                        <div class="text-white pl-2">${label}</div>
-                        <button type="button" id="rm-selected-result" class="close" style="outline:0; top: 6px; position: absolute; right: -20px; z-index: 3;" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                `)
-            })
-
-            $(document).on("click", "#rm-selected-result", function() {
-                $(media.mediaSearch.selectedResultContainer).replaceWith(media.mediaSearch.html);
-            })
-        </script>
-
-
-        <script>
             $(function() {
                 $("#btn-add-file").click(function() {
                     $("#rel-img-card").remove();
@@ -282,13 +55,14 @@
                         <!--<button type="button" id="rm-rel-img-card" class="close" style="outline: 0;" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>-->  
-                        <div class="card-body" style="width: 500px">
-                            <form enctype="multipart/form-data" id="form-rel-img" action="?controller=argomentiController&action=saveRelFile" method="post">
-                                <input type="hidden" name="id_gruppo" value="<?= htmlspecialchars($_GET['id'], ENT_QUOTES, 'UTF-8') ?>">
-                                <div class="media-uploader">
-                                </div>
-                                <button type="submit" class="btn btn-primary float-right mt-1">Salva</button>
-                            </form>
+                            <div class="card-body" style="width: 500px">
+                                <form enctype="multipart/form-data" id="form-rel-img" action="?controller=argomentiController&action=saveRelFile" method="post">
+                                    <input type="hidden" name="id_gruppo" value="<?= htmlspecialchars($_GET['id'], ENT_QUOTES, 'UTF-8') ?>">
+                                    <div class="media-uploader">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary float-right mt-1">Salva</button>
+                                </form>
+                            </div>
                         </div>
                     `)
                     media.display();
@@ -306,7 +80,6 @@
                     $(".app-content.content").removeClass("show-overlay");
                 }
             })
-
 
             $(document).on("submit", "#form-rel-img", function(e) {
                 $("#form-rel-img button[type=submit]").prop("disabled", true).text("Salvataggio...");
@@ -338,7 +111,7 @@
                             .then(response => response.json())
                             .then(data => {
                                 if (data.status == "OK") {
-                                    $(that).remove();
+                                    $(that).parent().remove();
                                     if ($(".inserted-image-content").length == 0 && $(".inserted-video-content").length == 0) {
                                         $("#images-container").remove();
                                         $("#btn-add-file").parent().addClass("text-center");
@@ -351,80 +124,7 @@
                 })
             <?php endif; ?>
         </script>
-        <style>
-            #remove-related-img {
-                right: -5px;
-                top: -5px;
-                width: 20px;
-                height: 20px;
-                line-height: 1;
-                font-size: 16px;
-                -webkit-user-select: none;
-            }
-
-            #remove-related-img:hover {
-                background-color: #f44336 !important;
-                box-shadow: 0px 0px 5px 0px rgba(201, 201, 201, 1);
-            }
-
-            /* width */
-            #search-link-result::-webkit-scrollbar {
-                width: 5px;
-            }
-
-            /* Track */
-            #search-link-result::-webkit-scrollbar-track {
-                background: transparent;
-            }
-
-            /* Handle */
-            #search-link-result::-webkit-scrollbar-thumb {
-                background: #888;
-                border-radius: 8px;
-            }
-
-            /* Handle on hover */
-            #search-link-result::-webkit-scrollbar-thumb:active {
-                background: #555;
-            }
-
-            #search-link-result li.li-media-search-result {
-                padding: 6px 10px !important;
-                /* background: #464d5c !important; */
-                /* transition: background-color .2s; */
-                cursor: pointer;
-            }
-
-            .li-media-search-result:hover {
-                background-color: #3a4255 !important;
-            }
-
-            .inserted-image-content {
-                width: 140px;
-                height: 140px;
-                position: relative;
-            }
-
-            .inserted-video-content {
-                width: 290px;
-                height: 140px;
-                position: relative;
-            }
-
-            .go-to-link-content {
-                display: block;
-                width: 100%;
-                font-size: 14px;
-                text-align: center;
-                padding: 2px 0;
-                border: 1px solid;
-                margin-bottom: 3px;
-            }
-
-            .go-to-link-content:hover {
-                text-decoration: underline;
-            }
-        </style>
+        <script src="/js/media.js"></script>
     </div>
 
     <div class="tab-pane fade" id="quiz" role="tabpanel" aria-labelledby="quiz-tab">
@@ -468,7 +168,7 @@
                                 <?php endif; ?>
                             </td>
                         <?php endif; ?>
-                        <td class="text-center p-0" style="<?= isset($_GET['searched_id']) && $_GET['searched_id'] == $domanda->id ? 'background-color: #800000;' : '' ?><?= $domanda->isContrapposta() && !empty($_GET['view_ans']) && $_GET['view_ans'] == 'true' ? 'background-color: #fbc02d;' : '' ?>"><?= $key + 1 ?></td>
+                        <td class="text-center p-0" style="<?= isset($_GET['searched_id']) && $_GET['searched_id'] == $domanda->id ? 'background-color: #800000;' : '' ?><?= $domanda->isContrapposta() && !empty($_GET['view_ans']) && $_GET['view_ans'] == 'true' ? 'background-color: #46c34c;' : '' ?>"><?= $key + 1 ?></td>
                         <td class="view-question-td" style="<?= isset($_GET['searched_id']) && $_GET['searched_id'] == $domanda->id ? 'background-color: #800000;' : '' ?>"><?= htmlspecialchars($domanda->domanda, ENT_QUOTES, 'UTF-8') ?></td>
                         <?php if (!empty($_GET['view_ans']) && $_GET['view_ans'] == 'true') : ?>
                             <td class="text-center" style="font-weight: 500; font-size: 1.2em; <?= isset($_GET['searched_id']) && $_GET['searched_id'] == $domanda->id ? 'background-color: #800000;' : '' ?><?= $domanda->risposta == 'V' ? 'color: #46c34c' : 'color: #ca0000' ?> !important"><?= htmlspecialchars($domanda->risposta, ENT_QUOTES, 'UTF-8') ?></td>
@@ -537,7 +237,7 @@
                     }
                 }
 
-                $("#tab-list a").click(function() {
+                $("#tab-list button").click(function() {
                     localStorage.setItem("tab", $(this).attr("href"))
                 })
 

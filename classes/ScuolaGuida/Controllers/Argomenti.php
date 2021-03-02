@@ -223,17 +223,32 @@ class Argomenti
         $domanda = $this->domandeTable->find(array('id_gruppo', 'id'), array($_GET['id_gruppo'], $_GET['id_domanda']));
         if ($_SESSION['role'] == 'autoscuola') {
             if (!empty($domanda)) {
+                $domanda = $domanda[0];
+                if (!empty($domanda->getCommento())) {
+                    if (!empty($domanda->getCommento()->id_domanda_link)) {
+                        $d = $this->domandeTable->find(array('id', 'id_gruppo'), array($domanda->getCommento()->id_domanda_link, $domanda->getCommento()->id_gruppo_link));
+                        if (!empty($d)) {
+                            $mediaLinkedLabel = ucfirst($d[0]->domanda);
+                        }
+                    } elseif (!empty($domanda->getCommento()->id_gruppo_link)) {
+                        $gruppo = $this->gruppiTable->findById($domanda->getCommento()->id_gruppo_link);
+                        if (!empty($gruppo)) {
+                            $mediaLinkedLabel = ucfirst($gruppo->descrizione);
+                        }
+                    }
+                }
                 return [
                     'template' => 'admin/risposta.html.php',
-                    'title' => $domanda[0]->domanda . ' - Argomenti competenze',
+                    'title' => ucfirst($domanda->domanda) . ' - Argomenti competenze',
                     'layoutVariables' => [
                         'breadcrumbs' => ['Lezione', 'Argomenti'],
                         'selectPatente' => true,
                         'search' => true
                     ],
                     'variables' => [
-                        'domanda' => $domanda[0],
-                        'autoscuola' => $autoscuola
+                        'domanda' => $domanda,
+                        'autoscuola' => $autoscuola,
+                        'mediaLinkedLabel' => $mediaLinkedLabel ?? null
                     ]
                 ];
             } else {
@@ -289,7 +304,7 @@ class Argomenti
                 $file_name = $commento->file_name;
                 $file_type = $commento->file_type;
             }
-            if (!empty($commento) && (isset($_POST['deleteImage']) || (!empty($_FILES['media-uploader-file']['tmp_name']) && !empty($commento->file_name)))) {
+            if (!empty($commento) && (isset($_POST['media_uploader_delete']) || (!empty($_FILES['media-uploader-file']['tmp_name']) && !empty($commento->file_name)))) {
                 if ($commento->file_type == 'image') {
                     $file = new \Ninja\File(__DIR__ . '/../../../public/img/domande/commenti/' . $commento->file_name);
                 } else if ($commento->file_type == 'video') {
@@ -311,10 +326,20 @@ class Argomenti
                     $file->save(__DIR__ . '/../../../public/video/domande/commenti/' . $file_name, ['mov', 'mp4']);
                 }
             }
-            if (empty(trim($_POST['comment'])) && empty($file_name) && isset($commento->id)) {
+            if (empty(trim($_POST['comment'])) && empty($file_name) && empty($_POST['']) && empty($_POST['id_gruppo_link']) && isset($commento->id)) {
                 $this->commentiTable->delete($commento->id);
-            } elseif (!empty(trim($_POST['comment'])) || !empty($file_name)) {
-                $this->commentiTable->save(array('id' => $_POST['id'] ?? null, 'id_domanda' => $_POST['id_domanda'], 'id_gruppo' => $_POST['id_gruppo'], 'id_autoscuola' => $this->authentication->getUser()->id, 'commento' => $_POST['comment'] ?? null, 'file_name' => $file_name ?? null, 'file_type' => $file_type ?? null));
+            } elseif (!empty(trim($_POST['comment'])) || !empty($file_name) || !empty($_POST['id_gruppo_link'])) {
+                $this->commentiTable->save(array(
+                    'id' => $_POST['id'] ?? null,
+                    'id_domanda' => $_POST['id_domanda'],
+                    'id_gruppo' => $_POST['id_gruppo'],
+                    'id_autoscuola' => $this->authentication->getUser()->id,
+                    'commento' => $_POST['comment'] ?? null,
+                    'file_name' => $file_name ?? null,
+                    'file_type' => $file_type ?? null,
+                    'id_gruppo_link' => $_POST['id_gruppo_link'] ?? null,
+                    'id_domanda_link' => $_POST['id_domanda_link'] ?? null
+                ));
             }
             header('location: ' . $_SERVER['HTTP_REFERER']);
         } else {
