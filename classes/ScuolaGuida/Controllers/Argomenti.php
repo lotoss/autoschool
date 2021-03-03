@@ -61,7 +61,7 @@ class Argomenti
             if (!empty($capitolo)) {
                 return [
                     'template' => 'admin/gruppi.html.php',
-                    'title' => $capitolo[0]->descrizione . ' - Argomenti',
+                    'title' => ucfirst($capitolo[0]->descrizione) . ' - Argomenti',
                     'layoutVariables' => [
                         'breadcrumbs' => ['Lezione', 'Argomenti'],
                         'selectPatente' => true,
@@ -105,7 +105,7 @@ class Argomenti
 
                 return [
                     'template' => 'admin/spiegazione.html.php',
-                    'title' => $gruppo->descrizione . ' - Argomenti',
+                    'title' => ucfirst($gruppo->descrizione) . ' - Argomenti',
                     'layoutVariables' => [
                         'breadcrumbs' => ['Lezione', 'Argomenti'],
                         'selectPatente' => true,

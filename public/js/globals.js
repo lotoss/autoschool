@@ -1,19 +1,19 @@
 $(document).on("click", ".view-img", function() {
     $("body").append(`
-            <div class="w-100 h-100 position-fixed" style="top: 0; background-color: #00000086; z-index: 99999" id="img-expanded">
+            <div class="w-100 h-100 position-fixed" style="top: 0; background-color: #00000092; z-index: 99999" id="img-expanded">
                 <div class="container h-100 d-flex justify-content-center">
                     <img src="${$(this).attr("src")}" alt="${$(this).attr("alt")}" class="d-block my-auto shadow-lg" style="max-width:calc(100vw - 5%), max-height: calc(100vh - 5%); min-width: 30vw">
                 </div>
             </div>
         `)
-    $("html").addClass("html-no-scroll");
+        // $("html").addClass("html-no-scroll");
 })
 
-$(document).on("click", function(e) {
+$(document).on("mousedown", function(e) {
     if ($("#img-expanded").length > 0) {
-        if (!$(e.target).is("img")) {
-            $("#img-expanded").remove();
-        }
+        //if (!$(e.target).is("img")) {
+        $("#img-expanded").remove();
+        //}
     }
 })
 

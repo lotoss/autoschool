@@ -74,8 +74,8 @@ class Studenti
     {
         $studente = &$_POST['studente'];
 
-        $studente['nome'] = ucwords(preg_replace('!\s+!', ' ', trim($studente['nome'])));
-        $studente['cognome'] = ucwords(preg_replace('!\s+!', ' ', trim($studente['cognome'])));
+        $studente['nome'] = ucwords(strtolower(preg_replace('!\s+!', ' ', trim($studente['nome']))));
+        $studente['cognome'] = ucwords(strtolower(preg_replace('!\s+!', ' ', trim($studente['cognome']))));
         $studente['email'] = strtolower(trim($studente['email']));
 
         if (empty(trim($studente['note']))) {
@@ -132,10 +132,10 @@ class Studenti
         if (empty($errors)) {
             //$plaintext_password = \ScuolaGuida\Entity\Studente::genNewPassword();
             $studente['id_autoscuola'] = $this->authentication->getUser()->id;
+            $studente['password'] = password_hash(str_replace(' ', '', strtolower($studente['cognome'])), PASSWORD_DEFAULT);
             try {
                 if (empty($this->studentiTable->findById($studente['id']))) {
                     $uuid = SoUuid::generate();
-                    $studente['password'] = password_hash(str_replace(' ', '', strtolower($studente['cognome'])), PASSWORD_DEFAULT);
                     $studente['id'] = $uuid->getString();
                 }
                 $this->studentiTable->save($studente);
@@ -149,17 +149,6 @@ class Studenti
                     ],
                     'variables' => [
                         'exception' => $e
-                    ]
-                ];
-            } catch (\PHPMailer\PHPMailer\Exception $e) {
-                return [
-                    'template' => 'admin/registra-studente.html.php',
-                    'title' => 'Nuovo studente',
-                    'layoutVariables' => [
-                        'breadcrumbs' => ['Studenti', 'Nuovo studente']
-                    ],
-                    'variables' => [
-                        'mail_exception' => $e
                     ]
                 ];
             }
@@ -256,6 +245,14 @@ class Studenti
                 'data_esame_teoria' => date("Y-m-d", mt_rand(time(), time() + 7884000000))
             );
             $this->studentiTable->save($user);
+        }
+    }
+
+    private function rebase()
+    {
+        $studenti = $this->studentiTable->findAll();
+        foreach ($studenti as $studente) {
+            $this->studentiTable->save(array('id' => $studente->id, 'nome' => ucwords(strtolower($studente->nome)), 'cognome' => ucwords(strtolower($studente->cognome))));
         }
     }
 }
